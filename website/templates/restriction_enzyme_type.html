@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Reagent</th>
+                <th scope="col">Activity Percentage in Buffers</th>
+                <th scope="col">Activity per ml</th>
+                <th scope="col">Optimal Temperature</th>
+                <th scope="col">Deactivation Capability</th>
+                <th scope="col">Storage Buffer Type</th>
+                <th scope="col">Reaction Buffer</th>
+                <th scope="col">Restriction Site</th>
+                <th scope="col">Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if restriction_enzyme_types %}
+                {% for restriction_enzyme_type in restriction_enzyme_types %}
+                    <tr>
+                        <td>{{ restriction_enzyme_type.reagent }}</td>
+                        <td>{{ restriction_enzyme_type.activity_percentage }}</td>
+                        <td>{{ restriction_enzyme_type.activity_per_ml }}</td>
+                        <td>{{ restriction_enzyme_type.optimal_temperature }}</td>
+                        <td>{{ restriction_enzyme_type.deactivation_capability }}</td>
+                        <td>{{ restriction_enzyme_type.storage_buffer_type }}</td>
+                        <td>{{ restriction_enzyme_type.reaction_buffer }}</td>
+                        <td>{{ restriction_enzyme_type.restriction_site }}</td>
+                        <td>{{ restriction_enzyme_type.reagent_type }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Name & Number</th>
+                <th scope="col">Container Number</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Type</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Expiration Date</th>
+                <th scope="col">Storage Temperature</th>
+                <th scope="col">Description</th>
+                <th scope="col">Special Instructions</th>
+                <th scope="col">Last Usage</th>
+                <th scope="col">Last User</th>
+                <th scope="col">ID</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if reagents %}
+                {% for reagent in reagents %}
+                    <tr>
+                        <td>{{ reagent.reagent_name }} {{ reagent.reagent_number }}</td>
+                        <td>
+                            <a href="{% url 'container_number' reagent.container_number %}">{{ reagent.container_number }}</a>
+                        </td>
+                        <td>{{ reagent.quantity }}</td>
+                        {% if reagent.reagent_type_id == 1 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 2 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 3 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 4 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 5 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 6 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% elif reagent.reagent_type_id == 7 %}
+                            <td>
+                                {{ reagent.reagent_type }}
+                            </td>
+                        {% endif %}
+                        <td>{{ reagent.created_at }}</td>
+                        <td>{{ reagent.expiration_date }}</td>
+                        <td>{{ reagent.storage_temperature }}</td>
+                        <td>{{ reagent.description }}</td>
+                        <td>{{ reagent.special_instructions }}</td>
+                        <td>{{ reagent.last_usage }}</td>
+                        <td>{{ reagent.last_user }}</td>
+                        <td><a href="{% url 'reagent' reagent.id %}">{{ reagent.id }}</a></td>
+                    </tr>
+                {% endfor %}
+
+            {% endif %}
+
+
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="col-md-6 offset-md-3">
+            <h1>Login</h1>
+            <br/>
+            <form method="POST" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required>
+                </div>
+                <br/>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-secondary">Login</button>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
