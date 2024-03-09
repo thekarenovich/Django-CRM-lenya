@@ -65,7 +65,7 @@ class AddReagentForm(forms.ModelForm):
         attrs={"placeholder": "Last Usage", "class": "form-control"}), label="")
     last_user = forms.ModelChoiceField(queryset=User.objects.exclude(username__startswith='admin'),
                                        required=True,
-                                       widget=forms.Select(attrs={"class": "form-control"}), label="Reagent Type")
+                                       widget=forms.Select(attrs={"class": "form-control"}), label="User")
 
     class Meta:
         model = Reagent

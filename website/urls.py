@@ -3,12 +3,14 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('export_excel/', views.ExportExcelView.as_view(), name='export_excel'),
 
     # user
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.register_user, name='register'),
 
     # reagent
+    path('export_pdf/<int:pk>/', views.export_reagent_to_pdf, name='export_reagent_to_pdf'),
     path('reagent/<int:pk>', views.customer_reagent, name='reagent'),
     path('delete_reagent/<int:pk>', views.delete_reagent, name='delete_reagent'),
     path('add_reagent/', views.add_reagent, name='add_reagent'),

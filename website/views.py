@@ -1,8 +1,90 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+import io
+from datetime import datetime
+
+import pytz
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.template.loader import get_template
+from django.views.generic import View
+from pyexcel_io import save_data
+from xhtml2pdf import pisa
+
 from .forms import SignUpForm, AddReagentForm
 from .models import *
+
+
+def export_reagent_to_pdf(request, pk):
+    if request.user.is_authenticated:
+        customer_reagent = Reagent.objects.get(id=pk)
+        template_path = 'reagent_pdf_template.html'
+        context = {'customer_reagent': customer_reagent}
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # Создаем PDF из HTML
+        response = HttpResponse(content_type='application/pdf')
+        response[
+            'Content-Disposition'] = f'filename="reagent_{customer_reagent.reagent_name}_{customer_reagent.reagent_number}.pdf"'
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+        if pisa_status.err:
+            return HttpResponse('Ошибка создания PDF: %s' % html)
+
+        return response
+    else:
+        messages.success(request, "You Must Be Logged In To View That Page...")
+        return redirect('home')
+
+
+class ExportExcelView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            raise PermissionDenied
+
+        reagents = Reagent.objects.all()
+
+        data = {
+            "Reagents": [
+                ["Name & Number", "Container Number", "Quantity", "Type", "Created At", "Expiration Date",
+                 "Storage Temperature", "Description", "Special Instructions", "Last Usage", "Last User", "ID"]
+            ]
+        }
+
+        local_timezone = pytz.timezone('Europe/Moscow')  # Российское европейское время
+        for reagent in reagents:
+            created_at = datetime.combine(reagent.created_at, datetime.min.time()).astimezone(local_timezone).replace(
+                tzinfo=None) if reagent.created_at else None
+            expiration_date = datetime.combine(reagent.expiration_date, datetime.min.time()).astimezone(
+                local_timezone).replace(tzinfo=None) if reagent.expiration_date else None
+            last_usage = datetime.combine(reagent.last_usage, datetime.min.time()).astimezone(local_timezone).replace(
+                tzinfo=None) if reagent.last_usage else None
+
+            data["Reagents"].append([
+                f"{reagent.reagent_name} {reagent.reagent_number}",
+                reagent.container_number.container_number,
+                reagent.quantity,
+                reagent.reagent_type.name,
+                created_at,
+                expiration_date,
+                reagent.storage_temperature,
+                reagent.description,
+                reagent.special_instructions,
+                last_usage,
+                reagent.last_user.username if reagent.last_user else "",
+                reagent.id
+            ])
+
+        io_stream = io.BytesIO()
+        save_data(io_stream, data, file_type='xlsx')
+        io_stream.seek(0)
+
+        response = HttpResponse(io_stream,
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=reagents.xlsx'
+        return response
 
 
 def storage_chamber(request, pk):

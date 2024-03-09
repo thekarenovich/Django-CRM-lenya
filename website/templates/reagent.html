@@ -1,60 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-
-
-
     <div class="card">
         <div class="card-header"><strong>
             {{ customer_reagent.reagent_name }}
             {{ customer_reagent.reagent_number }}</strong>
         </div>
         <div class="card-body">
-
-
             <p class="card-text">
                 <strong>Container Number: </strong>{{ customer_reagent.container_number }}</p>
-
             <p class="card-text">
                 <strong>Quantity: </strong>{{ customer_reagent.quantity }}
             </p>
-
             <p class="card-text">
                 <strong>Type: </strong>{{ customer_reagent.reagent_type }}</p>
-
             <p class="card-text">
                 <strong>Temperature: </strong>{{ customer_reagent.storage_temperature }}</p>
-
             <p class="card-text">
                 <strong>Description: </strong>{{ customer_reagent.description }}</p>
-
             <p class="card-text">
                 <strong>Special Instruction: </strong>{{ customer_reagent.special_instructions }}</p>
-
             <p class="card-text">
                 <strong>Last Usage: </strong>{{ customer_reagent.last_usage }}</p>
-
             <p class="card-text">
                 <strong>Last User: </strong>{{ customer_reagent.last_user }}</p>
-
             <p class="card-text">
                 <strong>Ex Date: </strong>{{ customer_reagent.expiration_date }}</p>
-
             <p class="card-text">
                 <strong>Created At: </strong>{{ customer_reagent.created_at }}</p>
-
             <p class="card-text">
                 <strong>ID: </strong>{{ customer_reagent.id }}</p>
-
-
         </div>
     </div>
-
     <br/><br/>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
-
     <a href="{% url 'delete_reagent' customer_reagent.id %}" class="btn btn-danger">Delete</a>
-
     <a href="{% url 'update_reagent' customer_reagent.id %}" class="btn btn-secondary">Update reagent</a>
-
-
+    <a href="{% url 'export_reagent_to_pdf' customer_reagent.id %}" class="btn btn-primary">Export to PDF</a>
 {% endblock %}
