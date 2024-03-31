@@ -4,47 +4,52 @@
     <meta charset="UTF-8">
     <title>Reagent PDF</title>
     <style>
+        @font-face {
+            font-family: 'ArialUnicode';
+            src: url('Arial_Unicode_MS.ttf') format('truetype');
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'ArialUnicode', Arial, sans-serif;
         }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .card {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .card-text strong {
-            width: 150px;
-            display: inline-block;
-        }
+                .container {
+                    width: 80%;
+                    margin: 0 auto;
+                }
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .card {
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                }
+                .card-text strong {
+                    width: 150px;
+                    display: inline-block;
+                }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h1>{{ customer_reagent.reagent_name }} {{ customer_reagent.reagent_number }}</h1>
-            <div class="card-text">
-                <strong>Container Number:</strong> {{ customer_reagent.container_number }}<br>
-                <strong>Quantity:</strong> {{ customer_reagent.quantity }}<br>
-                <strong>Type:</strong> {{ customer_reagent.reagent_type }}<br>
-                <strong>Temperature:</strong> {{ customer_reagent.storage_temperature }}<br>
-                <strong>Description:</strong> {{ customer_reagent.description }}<br>
-                <strong>Special Instruction:</strong> {{ customer_reagent.special_instructions }}<br>
-                <strong>Last Usage:</strong> {{ customer_reagent.last_usage }}<br>
-                <strong>Last User:</strong> {{ customer_reagent.last_user }}<br>
-                <strong>Ex Date:</strong> {{ customer_reagent.expiration_date }}<br>
-                <strong>Created At:</strong> {{ customer_reagent.created_at }}<br>
-                <strong>ID:</strong> {{ customer_reagent.id }}<br>
-            </div>
+<div class="container">
+    <div class="card">
+        <h1>{{ customer_reagent.reagent_name }} {{ customer_reagent.reagent_number }}</h1>
+        <div class="card-text">
+            <strong>Container Number:</strong> {{ customer_reagent.container_number }}<br>
+            <strong>Quantity:</strong> {{ customer_reagent.quantity }}<br>
+            <strong>Type:</strong> {{ customer_reagent.reagent_type }}<br>
+            <strong>Temperature:</strong> {{ customer_reagent.storage_temperature }}<br>
+            <strong>Description:</strong> {{ customer_reagent.description }}<br>
+            <strong>Special Instruction:</strong> {{ customer_reagent.special_instructions }}<br>
+            <strong>Last Usage:</strong> {{ customer_reagent.last_usage }}<br>
+            <strong>Last User:</strong> {{ customer_reagent.last_user }}<br>
+            <strong>Ex Date:</strong> {{ customer_reagent.expiration_date }}<br>
+            <strong>Created At:</strong> {{ customer_reagent.created_at }}<br>
+            <strong>ID:</strong> {{ customer_reagent.id }}<br>
         </div>
     </div>
+</div>
 </body>
 </html>

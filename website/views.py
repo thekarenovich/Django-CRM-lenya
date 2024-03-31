@@ -5,6 +5,8 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
@@ -29,7 +31,8 @@ def export_reagent_to_pdf(request, pk):
         response[
             'Content-Disposition'] = f'filename="reagent_{customer_reagent.reagent_name}_{customer_reagent.reagent_number}.pdf"'
 
-        pisa_status = pisa.CreatePDF(html, dest=response)
+        # Добавляем encoding='utf-8' для правильной обработки русских символов
+        pisa_status = pisa.CreatePDF(html, dest=response, encoding='utf-8')
         if pisa_status.err:
             return HttpResponse('Ошибка создания PDF: %s' % html)
 
@@ -197,12 +200,9 @@ def substance_solution_type(request):
 
 
 def home(request):
-    reagents = Reagent.objects.all()
-    # Check to see if logging in
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        # Authenticate
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -212,8 +212,21 @@ def home(request):
             messages.success(request, "There Was An Error Logging In, Please Try Again...")
             return redirect('home')
     else:
-        return render(request, 'home.html', {'reagents': reagents})
+        reagents_list = Reagent.objects.all()
 
+        sort_param = request.GET.get('sort')
+        direction = request.GET.get('dir')
+
+        if sort_param:
+            if direction == 'asc':
+                reagents_list = reagents_list.order_by(sort_param)
+            elif direction == 'desc':
+                reagents_list = reagents_list.order_by(F(sort_param).desc())
+
+        paginator = Paginator(reagents_list, 3)
+        page_number = request.GET.get('page')
+        reagents = paginator.get_page(page_number)
+        return render(request, 'home.html', {'reagents': reagents})
 
 def logout_user(request):
     logout(request)

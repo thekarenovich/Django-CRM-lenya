@@ -2,6 +2,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Reagent, ReagentType, ContainerType, Container
+from django import forms
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms import SelectDateWidget
+from .models import Reagent, Container, ReagentType
 
 
 class SignUpForm(UserCreationForm):
@@ -38,7 +42,11 @@ class SignUpForm(UserCreationForm):
             'password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
 
 
-# Create Add Reagent Form
+from django import forms
+from .models import Reagent, Container, ReagentType
+from django.contrib.auth.models import User
+
+
 class AddReagentForm(forms.ModelForm):
     reagent_number = forms.CharField(required=True, widget=forms.TextInput(
         attrs={"placeholder": "Reagent Number", "class": "form-control"}), label="")
@@ -53,7 +61,7 @@ class AddReagentForm(forms.ModelForm):
     reagent_type = forms.ModelChoiceField(queryset=ReagentType.objects.all(), required=True,
                                           widget=forms.Select(attrs={"class": "form-control"}), label="Reagent Type")
     expiration_date = forms.DateTimeField(required=True, widget=forms.DateTimeInput(
-        attrs={"placeholder": "Expiration Date", "class": "form-control"}), label="")
+        attrs={"placeholder": "Expiration Date", "class": "form-control", "type": "datetime-local"}), label="")
     storage_temperature = forms.CharField(required=True, widget=forms.TextInput(
         attrs={"placeholder": "Storage Temperature", "class": "form-control"}), label="")
     description = forms.CharField(required=True,
@@ -62,10 +70,10 @@ class AddReagentForm(forms.ModelForm):
     special_instructions = forms.CharField(required=True, widget=forms.TextInput(
         attrs={"placeholder": "Special Instructions", "class": "form-control"}), label="")
     last_usage = forms.DateTimeField(required=True, widget=forms.DateTimeInput(
-        attrs={"placeholder": "Last Usage", "class": "form-control"}), label="")
+        attrs={"placeholder": "Last Usage (date & time)", "class": "form-control", "type": "datetime-local"}), label="")
     last_user = forms.ModelChoiceField(queryset=User.objects.exclude(username__startswith='admin'),
                                        required=True,
-                                       widget=forms.Select(attrs={"class": "form-control"}), label="User")
+                                       widget=forms.Select(attrs={"class": "form-control"}), label="Last User")
 
     class Meta:
         model = Reagent

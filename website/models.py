@@ -62,6 +62,16 @@ class Reagent(models.Model):
         return self.reagent_name
 
 
+class Magazine(models.Model):
+    number = models.CharField(max_length=50, verbose_name="Номер журнала")
+    reagent_number = models.ForeignKey(Reagent, on_delete=models.CASCADE, verbose_name="Номер реагента")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    content = models.TextField(verbose_name="Содеражние")
+    last_alert = models.DateTimeField(null=True, blank=True, verbose_name="Последнее изменение")
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name="Автор")
+
+
 # type 1
 class OtherSolution(models.Model):
     reagent = models.FloatField(verbose_name="Код реагента")
