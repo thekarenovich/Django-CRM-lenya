@@ -41,7 +41,8 @@
         color: inherit; /* Наследовать цвет от родительского элемента */
     }
 </style>
-
+<h1>Реагенты</h1>
+<h1></h1>
 <table class="table table-striped table-hover table-bordered">
     <thead class="table-dark">
     <tr>
@@ -61,8 +62,8 @@
     </tr>
     </thead>
     <tbody>
-    {% if reagents %}
-    {% for reagent in reagents %}
+    {% if page_obj %}
+    {% for reagent in page_obj %}
     <tr>
         <td><a href="{% url 'reagent' reagent.id %}">{{ reagent.id }}</a></td>
         <td>{{ reagent.reagent_name }} {{ reagent.reagent_number }}</td>
@@ -70,31 +71,31 @@
             <a href="{% url 'container_number' reagent.container_number %}">{{ reagent.container_number }}</a>
         </td>
         <td>{{ reagent.quantity }}</td>
-        {% if reagent.reagent_type_id == 1 %}
+        {% if reagent.reagent_type_id == 4 %}
         <td>
             <a href="{% url 'other_solution_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 2 %}
+        {% elif reagent.reagent_type_id == 3 %}
         <td>
             <a href="{% url 'buffer_solution_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 3 %}
+        {% elif reagent.reagent_type_id == 6 %}
         <td>
             <a href="{% url 'ferment_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 4 %}
+        {% elif reagent.reagent_type_id == 1 %}
         <td>
             <a href="{% url 'dry_substance_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 5 %}
+        {% elif reagent.reagent_type_id == 7 %}
         <td>
             <a href="{% url 'primer_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 6 %}
+        {% elif reagent.reagent_type_id == 5 %}
         <td>
             <a href="{% url 'restriction_enzyme_type' %}">{{ reagent.reagent_type }}</a>
         </td>
-        {% elif reagent.reagent_type_id == 7 %}
+        {% elif reagent.reagent_type_id == 2 %}
         <td>
             <a href="{% url 'substance_solution_type' %}">{{ reagent.reagent_type }}</a>
         </td>
@@ -125,22 +126,19 @@
 </table>
 
 <div class="pagination">
-    <ul style="padding: 0; display: flex; list-style: none;">
-        {% if reagents.has_previous %}
-            <li><a href="?page=1" style="color: white;">&laquo; первая</a></li>
-            <li><a href="?page={{ reagents.previous_page_number }}" style="color: white;">предыдущая</a></li>
-        {% endif %}
-
-        <li class="current">{{ reagents.number }} of {{ reagents.paginator.num_pages }}</li>
-
-        {% if reagents.has_next %}
-            <li><a href="?page={{ reagents.next_page_number }}" style="color: white;">следующая</a></li>
-            <li><a href="?page={{ reagents.paginator.num_pages }}" style="color: white;">последняя &raquo;</a></li>
-        {% endif %}
-    </ul>
-</div>
-
-<a href="{% url 'export_excel' %}" class="btn btn-success">Export to Excel</a>
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                {% endif %}
+                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+<a href="{% url 'export_excel' %}" class="btn btn-dark">Экспорт списка в Excel</a>
 
 {% else %}
 

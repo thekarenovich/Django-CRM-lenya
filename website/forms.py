@@ -1,11 +1,22 @@
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from .models import Reagent, Container, ReagentType, Magazine
 from django.contrib.auth.models import User
-from django import forms
-from .models import Reagent, ReagentType, ContainerType, Container
-from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
-from django.forms import SelectDateWidget
-from .models import Reagent, Container, ReagentType
+
+
+class MagazineForm(forms.ModelForm):
+    reagents = forms.ModelMultipleChoiceField(queryset=Reagent.objects.all(),
+                                              widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
+    author = forms.ModelChoiceField(queryset=User.objects.all(), empty_label=None,
+                                    widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Magazine
+        fields = ['number', 'reagents', 'content', 'author']
+        widgets = {
+            'number': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
 
 
 class SignUpForm(UserCreationForm):
@@ -40,11 +51,6 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].label = ''
         self.fields[
             'password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
-
-
-from django import forms
-from .models import Reagent, Container, ReagentType
-from django.contrib.auth.models import User
 
 
 class AddReagentForm(forms.ModelForm):

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1>Журнал</h1>
+        <button type="submit" class="btn btn-primary">
+            <a class="nav-link" href="{% url 'add_magazine' %}">Добавить запись в журнал</a>
+        </button>
+        <h1></h1>
+        <ul class="list-group">
+            {% for magazine in page_obj %}
+            <strong>Номер записи: {{ magazine.number }}</strong>
+                <li class="list-group-item">
+                    {% for reagent in magazine.reagents.all %}
+                        {{ reagent.reagent_name }}
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+                <li class="list-group-item">{{ magazine.content }}</li>
+                <li class="list-group-item">{{ magazine.author }}</li>
+                <br>
+            {% endfor %}
+        </ul>
+        <!-- Вывод пагинации -->
+        <div class="pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                {% endif %}
+                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

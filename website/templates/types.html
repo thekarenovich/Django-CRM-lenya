@@ -20,37 +20,37 @@
                 {% for type in types %}
                     <tr>
                         <td>{{ type.code }}</td>
-                        {% if type.code == '1' %}
+                        {% if type.code == '4' %}
                             <td>
                                 <a href="{% url 'other_solution_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '2' %}
+                        {% elif type.code == '3' %}
                             <td>
                                 <a href="{% url 'buffer_solution_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '3' %}
+                        {% elif type.code == '6' %}
                             <td>
                                 <a href="{% url 'ferment_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '4' %}
+                        {% elif type.code == '1' %}
                             <td>
                                 <a href="{% url 'dry_substance_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '5' %}
+                        {% elif type.code == '7' %}
                             <td>
                                 <a href="{% url 'primer_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '6' %}
+                        {% elif type.code == '5' %}
                             <td>
                                 <a href="{% url 'restriction_enzyme_type' %}">{{ type.name }}</a>
                             </td>
-                        {% elif type.code == '7' %}
+                        {% elif type.code == '2' %}
                             <td>
                                 <a href="{% url 'substance_solution_type' %}">{{ type.name }}</a>
                             </td>
                         {% else %}
                             <td>
-                                Hello
+                                Empty
                             </td>
                         {% endif %}
                     </tr>

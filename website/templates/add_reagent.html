@@ -2,7 +2,7 @@
 {% block content %}
 
     <div class="col-md-6 offset-md-3">
-        <h1>Add Reagent</h1>
+        <h1>Добавить реагент</h1>
         <br/>
 
         <form method="POST" action="{% url 'add_reagent' %}">
@@ -12,8 +12,8 @@
             {{ form.as_p }}
 
             <br/>
-            <button type="submit" class="btn btn-secondary">Add Reagent</button>
-            <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-secondary">Добавить</button>
+            <a href="{% url 'home' %}" class="btn btn-light">Назад</a>
 
         </form>
 

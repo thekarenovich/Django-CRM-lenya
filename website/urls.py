@@ -16,10 +16,15 @@ urlpatterns = [
     path('add_reagent/', views.add_reagent, name='add_reagent'),
     path('update_reagent/<int:pk>', views.update_reagent, name='update_reagent'),
 
+    # magazine
+    path('get_magazines', views.get_magazines, name='get_magazines'),
+    path('add_magazine', views.add_magazine, name='add_magazine'),
+
     # container
-    path('container_numbers/<int:pk>', views.container_number, name='container_number'),
-    path('container_numbers/<int:pk>/storage_location', views.storage_location, name='storage_location'),
-    path('container_numbers/<int:pk>/storage_location/storage_chamber', views.storage_chamber, name='storage_chamber'),
+    path('container_numbers/<str:container_number>', views.container_number, name='container_number'),
+    path('container_numbers/<str:container_number>/storage_location', views.storage_location, name='storage_location'),
+    path('container_numbers/<str:container_number>/storage_location/storage_chamber', views.storage_chamber,
+         name='storage_chamber'),
 
     # types
     path('types/', views.types, name='types'),
@@ -31,4 +36,18 @@ urlpatterns = [
     path('types/substance_solution_type/', views.substance_solution_type, name='substance_solution_type'),
     path('types/dry_substance_type/', views.dry_substance_type, name='dry_substance_type'),
 
+    # add to db
+    path('add_storage_chamber/', views.add_storage_chamber),
+    path('add_storage_location/', views.add_storage_location),
+    path('add_container_type/', views.add_container_type),
+    path('add_container/', views.add_container),
+    path('add_reagent_type/', views.add_reagent_type),
+    path('add_reagents/', views.add_reagents),
+    path('add_other_solutions/', views.add_other_solutions),
+    path('add_buffer_solutions/', views.add_buffer_solutions),
+    path('add_ferment_types/', views.add_ferment_types),
+    path('add_dry_substance_types/', views.add_dry_substance_types),
+    path('add_primer_types/', views.add_primer_types),
+    path('add_restriction_enzyme_types/', views.add_restriction_enzyme_types),
+    path('add_substance_solution_types/', views.add_substance_solution_types),
 ]

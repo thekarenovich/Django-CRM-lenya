@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5 rounded">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Добавить журнал</h1>
+                        <form method="POST" action="{% url 'add_magazine' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Номер журнала:</label>
+                                {{ form.number }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="reagents" class="form-label">Реагенты:</label>
+                                {{ form.reagents }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Содержание:</label>
+                                {{ form.content }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="author" class="form-label">Автор:</label>
+                                {{ form.author }}
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Добавить</button><br>
+                                <a href="{% url 'home' %}" class="btn btn-secondary">Назад</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
